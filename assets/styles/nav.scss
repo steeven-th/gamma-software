@@ -1,0 +1,26 @@
+@layer components {
+  .navside {
+
+    .svg-nav-link {
+      @apply transition duration-75 group-hover:text-gray-900;
+    }
+  }
+
+  .nav-button {
+    @apply items-center font-medium text-sm text-gray-900 cursor-pointer hover:bg-gray-100 rounded;
+    &.nav-btn-normal {
+      @apply inline-flex justify-center px-4 py-2;
+    }
+
+    &.nav-btn-full {
+      @apply flex justify-start p-2;
+      &.nav-btn-sub {
+        @apply ml-8;
+      }
+    }
+
+    &.nav-btn-active {
+      @apply bg-blue-600 text-white;
+    }
+  }
+}

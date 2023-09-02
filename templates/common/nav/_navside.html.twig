@@ -1,0 +1,29 @@
+<aside id="logo-sidebar"
+       class="navside fixed top-0 left-0 z-[35] w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
+       aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
+
+        {# TITRE #}
+        <h5 id="drawer-disable-body-scrolling-label"
+            class="text-base font-semibold text-gray-500 uppercase p-2">
+            {% trans %}Menu{% endtrans %}
+        </h5>
+
+        {# LIENS #}
+        <ul class="space-y-2 font-medium">
+            <li>
+                <a href="#"
+                   class="nav-button nav-btn-full{% if app.current_route == 'app_import_file' %} nav-btn-active{% endif %}">
+                    <svg aria-hidden="true"
+                         class="icon size-6 {% if app.current_route == 'app_import_file' %}white{% else %}gray{% endif %} svg-nav-link"
+                         fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="1.5"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25"></path>
+                    </svg>
+                    <span class="ml-3">{% trans %}Importer un fichier{% endtrans %}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

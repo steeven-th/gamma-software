@@ -1,0 +1,141 @@
+@layer components {
+
+  h1 {
+    @apply text-5xl font-extrabold;
+  }
+
+  h2 {
+    @apply text-4xl font-bold;
+  }
+
+  h3 {
+    @apply text-3xl font-bold;
+  }
+
+  h4 {
+    @apply text-2xl font-bold;
+  }
+
+  h5 {
+    @apply text-xl font-bold;
+  }
+
+  h6 {
+    @apply text-lg font-bold;
+  }
+
+  p {
+    @apply text-base text-gray-900;
+  }
+
+  .text-xxs {
+    font-size: .6rem;
+    line-height: 1rem;
+  }
+
+  .main-content {
+    @apply sm:ml-64 pt-20 px-2 sm:px-6 lg:px-8;
+
+    .block-body {
+      @apply relative overflow-x-auto p-3;
+    }
+  }
+
+  .hover-scale-105 {
+    @apply transition duration-500 hover:scale-105;
+  }
+
+  .hover-stroke {
+    @apply stroke-1 hover:stroke-2;
+  }
+
+  .icon {
+    &.size-8 {
+      @apply h-8 w-8;
+    }
+
+    &.size-6 {
+      @apply h-6 w-6;
+    }
+
+    &.blue {
+      @apply text-blue-500;
+    }
+
+    &.stroke-blue {
+      @apply stroke-blue-500;
+    }
+
+    &.red {
+      @apply text-red-500;
+    }
+
+    &.stroke-red {
+      @apply stroke-red-500;
+    }
+
+    &.green {
+      @apply text-green-500;
+    }
+
+    &.stroke-green {
+      @apply stroke-green-500;
+    }
+
+    &.gray {
+      @apply text-gray-500;
+    }
+
+    &.stroke-gray {
+      @apply stroke-gray-500;
+    }
+
+    &.white {
+      @apply text-white;
+    }
+  }
+
+  .btn {
+    @apply text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2 focus:outline-none;
+
+    &.btn-blue {
+      @apply bg-blue-700 hover:bg-blue-800 focus:ring-blue-300;
+    }
+
+    &.btn-green {
+      @apply bg-green-700 hover:bg-green-800 focus:ring-green-300;
+    }
+
+    &.btn-red {
+      @apply bg-red-700 hover:bg-red-800 focus:ring-red-300;
+    }
+  }
+
+  .link {
+    @apply font-medium text-blue-600 hover:underline;
+  }
+
+  .badge-green {
+    @apply inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-green-800 bg-green-100 rounded;
+
+    .badge-green-remove {
+      @apply inline-flex items-center p-0.5 ml-2 text-sm text-green-400 bg-transparent rounded-sm hover:bg-green-200 hover:text-green-900;
+    }
+  }
+
+  .badge-yellow {
+    @apply inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-yellow-800 bg-yellow-100 rounded;
+
+    .badge-yellow-remove {
+      @apply inline-flex items-center p-0.5 ml-2 text-sm text-yellow-400 bg-transparent rounded-sm hover:bg-yellow-200 hover:text-yellow-900;
+    }
+  }
+
+  .badge-red {
+    @apply inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-red-800 bg-red-100 rounded;
+
+    .badge-red-remove {
+      @apply inline-flex items-center p-0.5 ml-2 text-sm text-red-400 bg-transparent rounded-sm hover:bg-red-200 hover:text-red-900;
+    }
+  }
+}
