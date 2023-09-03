@@ -89,7 +89,7 @@ class MusicBands {
         return $this->endYear;
     }
 
-    public function setEndYear(DateTimeInterface $endYear): static {
+    public function setEndYear(?DateTimeInterface $endYear): static {
         $this->endYear = $endYear;
 
         return $this;

@@ -8,6 +8,16 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 import 'flowbite';
+import {Modal} from "flowbite";
 
 const $ = require('jquery');
 global.$ = global.jQuery = $;
+
+export function createModal(target) {
+
+    const options = {
+        backdropClasses: 'bg-gray-900 bg-opacity-50 fixed inset-0 z-40'
+    }
+
+    return new Modal(target, options);
+}

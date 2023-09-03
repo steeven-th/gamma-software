@@ -1,26 +1,37 @@
 import {Controller} from '@hotwired/stimulus';
+import {createModal} from "../app";
 
 export default class extends Controller {
 
     connect() {
 
+        // Création de la modal pour les éditions de données
+        const modalEdit = createModal(document.getElementById('edit-data'));
 
+        // Récupération de l'URL du site
         let websiteroot = this.element.dataset.fileUploadWebsiterootValue;
 
+        // Ajout des évènements
         document.getElementById("uploadFile").addEventListener("click", uploadFile);
         document.getElementById("dropDataBase").addEventListener("click", dropDataBase);
         document.getElementById("nextDatas").addEventListener("click", nextDatas);
         document.getElementById("previousDatas").addEventListener("click", previousDatas);
-
+        document.getElementById("closeModal").addEventListener("click", function () {
+            modalEdit.hide();
+        });
+        document.getElementById("saveModal").addEventListener("click", function () {
+            saveDatas(document.getElementById("saveModal").dataset.id);
+        });
         document.addEventListener('click', function (event) {
             if (event.target.matches('.deleteData')) {
                 deleteData(event.target.dataset.id);
+            } else if (event.target.matches('.editData')) {
+                editData(event.target.dataset.id);
             }
         });
 
+        // Récupération des données au chargement de la page
         $(document).ready(function () {
-
-            //Récupération des données au chargement de la page
             $.ajax({
                 url: websiteroot + '/load/datas',
                 type: 'POST',
@@ -126,9 +137,6 @@ export default class extends Controller {
 
         async function deleteData(id) {
 
-            let thead = document.getElementById("thead-musicBands-" + id);
-            let tbody = document.getElementById("tbody-musicBands-" + id);
-
             $.ajax({
                 url: websiteroot + '/import/data/delete',
                 type: 'POST',
@@ -137,7 +145,7 @@ export default class extends Controller {
                     id: id
                 },
                 success: function (data) {
-                    console.log(data);
+                    // Après suppression, on recharge les données du tableau
                     $.ajax({
                         url: websiteroot + '/load/datas',
                         type: 'POST',
@@ -149,6 +157,8 @@ export default class extends Controller {
                         success: function (data) {
                             document.getElementById("thead-musicBands").innerHTML = "";
                             document.getElementById("tbody-musicBands").innerHTML = "";
+                            document.getElementById("nextDatas").classList.add('hidden');
+                            document.getElementById("previousDatas").classList.add('hidden');
                             displayDatas(data.musicBands);
                         },
                         error: function (data) {
@@ -164,8 +174,8 @@ export default class extends Controller {
 
         async function previousDatas() {
 
+            // Récupération de l'offset
             let offset = document.getElementById("table-musicBands").dataset.offset;
-            console.log(offset)
 
             if (offset > 0) {
                 $.ajax({
@@ -178,7 +188,8 @@ export default class extends Controller {
                     },
                     success: function (data) {
                         if (data.musicBands.length > 0) {
-                            document.getElementById("table-musicBands").dataset.offset = Number(offset) - 5;
+                            // On met à jour l'offset et on recharge les données du tableau
+                            document.getElementById("table-musicBands").dataset.offset = (Number(offset) - 5).toString();
                             document.getElementById("thead-musicBands").innerHTML = "";
                             document.getElementById("tbody-musicBands").innerHTML = "";
                             displayDatas(data.musicBands);
@@ -193,8 +204,8 @@ export default class extends Controller {
 
         async function nextDatas() {
 
+            // Récupération de l'offset
             let offset = document.getElementById("table-musicBands").dataset.offset;
-            console.log(offset)
 
             $.ajax({
                 url: websiteroot + '/load/datas',
@@ -206,11 +217,70 @@ export default class extends Controller {
                 },
                 success: function (data) {
                     if (data.musicBands.length > 0) {
-                        document.getElementById("table-musicBands").dataset.offset = Number(offset) + 5;
+                        // On met à jour l'offset et on recharge les données du tableau
+                        document.getElementById("table-musicBands").dataset.offset = (Number(offset) + 5).toString();
                         document.getElementById("thead-musicBands").innerHTML = "";
                         document.getElementById("tbody-musicBands").innerHTML = "";
                         displayDatas(data.musicBands);
                     }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        async function editData(id) {
+            $.ajax({
+                url: websiteroot + '/edit/data',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    // On met à jour le modal et on l'affiche
+                    document.getElementById("titleModal").innerHTML = JSON.parse(data).musicBandName;
+                    document.getElementById("bodyModal").innerHTML = JSON.parse(data).modal;
+                    document.getElementById("saveModal").setAttribute('data-id', 'formId-' + JSON.parse(data).musicBandId);
+                    modalEdit.show();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        async function saveDatas(id) {
+            $.ajax({
+                url: websiteroot + '/update/data',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    id: id,
+                    form: JSON.parse(JSON.stringify($('form').serializeArray()))
+                },
+                success: function (data) {
+                    // Après sauvegarde, on recharge les données du tableau et on ferme le modal
+                    modalEdit.hide();
+                    $.ajax({
+                        url: websiteroot + '/load/datas',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            step: 5,
+                            offset: 0
+                        },
+                        success: function (data) {
+                            document.getElementById("table-musicBands").dataset.offset = "0";
+                            document.getElementById("thead-musicBands").innerHTML = "";
+                            document.getElementById("tbody-musicBands").innerHTML = "";
+                            displayDatas(data.musicBands);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
                 },
                 error: function (data) {
                     console.log(data);
@@ -288,7 +358,7 @@ export default class extends Controller {
                 tbodyMusicBands.appendChild(tr);
 
                 let td1 = document.createElement("td");
-                td1.innerHTML = musicBand.name;
+                td1.innerHTML = '<button data-id="' + musicBand.id + '" class="editData">' + musicBand.name + '</button>';
                 td1.classList.add("border-grey-light", "border", "hover:bg-gray-100", "p-3", "font-medium", "text-gray-900", "whitespace-nowrap");
                 tr.appendChild(td1);
 
@@ -348,7 +418,7 @@ export default class extends Controller {
                 tr.appendChild(td9);
 
                 let td10 = document.createElement("td");
-                td10.innerHTML = '<button data-id="' + musicBand.id + '" class="deleteData btn btn-red text-xs" onclick="deleteData(' + musicBand.id + ')">\n' +
+                td10.innerHTML = '<button data-id="' + musicBand.id + '" class="deleteData btn btn-red text-xs">\n' +
                     'Supprimer\n' +
                     '</button>';
                 td10.classList.add("border-grey-light", "border", "hover:bg-gray-100", "p-2");

@@ -1,0 +1,81 @@
+{% form_theme form 'tailwind_2_layout.html.twig' %}
+{{ form_start(form, {'attr': {'id': 'formId-'~musicBand.id}}) }}
+
+    {{ form_row(form.name, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+    {{ form_row(form.origin, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+     {{ form_row(form.city, {
+         'attr': {
+             'class': 'formInput'
+         }
+     }) }}
+
+{# Rendu manuel des dates pour ne prendre que l'année en compte #}
+
+{# Date de début #}
+<label for="music_bands_{{ form.startYear.vars.name }}_year"
+       class="block mb-2 text-sm font-medium text-gray-900">
+    Année de début
+</label>
+<select id="music_bands_{{ form.startYear.vars.name }}_year"
+        name="music_bands_[{{ form.startYear.vars.name }}][year]"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    {% for year in 1800..'now'|date('Y') %}
+        <option {% if form.startYear.vars.value['year'] == year %}selected{% endif %}
+                value="{{ year }}">{{ year }}</option>
+    {% endfor %}
+</select>
+
+{% do form.startYear.setRendered() %}
+
+{# Date de fin #}
+<label for="music_bands_{{ form.endYear.vars.name }}_year"
+       class="block mb-2 text-sm font-medium text-gray-900">
+    Année de fin
+</label>
+<select id="music_bands_{{ form.endYear.vars.name }}_year"
+        name="music_bands_[{{ form.endYear.vars.name }}][year]"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    <option value="">Non renseigné</option>
+    {% for year in 1800..'now'|date('Y') %}
+        <option {% if form.endYear.vars.value['year'] == year %}selected{% endif %}
+                value="{{ year }}">{{ year }}</option>
+    {% endfor %}
+</select>
+
+{% do form.endYear.setRendered() %}
+
+    {{ form_row(form.founders, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+    {{ form_row(form.members, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+    {{ form_row(form.musicalStyle, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+    {{ form_row(form.description, {
+        'attr': {
+            'class': 'formInput'
+        }
+    }) }}
+
+{{ form_end(form) }}

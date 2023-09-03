@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ImportFileController!{% endblock %}
+{% block title %}Gestion des données{% endblock %}
 
 {% block body %}
     <div {{ stimulus_controller('file_upload', {'websiteroot' : websiteroot}) }}
             class="flex flex-col items-center space-x-6"
     >
 
+        {% include 'manage_datas/modal.html.twig' %}
 
         <button id="dropDataBase" type="button" class="flex items-center btn btn-red mb-5">
             <svg id="dropLoading"
@@ -75,12 +76,15 @@
             </tbody>
         </table>
 
-        <div>
+        <div class="m-0">
             <button id="previousDatas" class="btn btn-blue hidden">
                 Précédents
             </button>
             <button id="nextDatas" class="btn btn-blue hidden">
                 Suivants
+            </button>
+            <button data-id="0" class="editData btn btn-green">
+                Nouveau
             </button>
         </div>
     </div>
